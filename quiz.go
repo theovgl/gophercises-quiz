@@ -45,7 +45,7 @@ func runQuizz(config *QuizConfig, problems [][]string) {
 			config.score++
 		}
 	}
-	fmt.Printf("Your score is %d\n", config.score)
+	fmt.Printf("You scored %d out of %d\n", config.score, len(problems))
 }
 
 func parseCSVFile(filename string) ([][]string, error) {
