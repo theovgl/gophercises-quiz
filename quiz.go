@@ -6,6 +6,11 @@ import (
 	"os"
 )
 
+type QuizConfig struct {
+	timeLimit int
+	score     int
+}
+
 func printHelp() {
 	fmt.Println("Usage of ./quizz:")
 
