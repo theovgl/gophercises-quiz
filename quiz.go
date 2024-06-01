@@ -12,19 +12,6 @@ type QuizConfig struct {
 	score     int
 }
 
-func printHelp() {
-	fmt.Println("Usage of ./quiz:")
-
-	fmt.Println("  -h")
-	fmt.Println("\tDisplay this help message")
-
-	fmt.Println("  -csv string")
-	fmt.Println("\tA csv file in the format 'question,answer' (default \"problems.csv\")")
-
-	fmt.Println("  -limit int")
-	fmt.Println("\tthe time limit for the quiz in seconds (default 30)")
-}
-
 func checkError(e error) {
 	if e != nil {
 		panic(e)
@@ -66,17 +53,11 @@ func parseCSVFile(filename string) ([][]string, error) {
 
 func main() {
 	// Declare flags
-	helpFlag := flag.Bool("h", false, "display help")
-	csvFlag := flag.String("csv", "problems.csv", "specify file path")
-	timeFlag := flag.Int("limit", 30, "specify time limit")
+	csvFlag := flag.String("csv", "problems/maths.csv", "a csv file in the format 'question,answer'")
+	timeFlag := flag.Int("limit", 30, "the time limit for the quiz in seconds")
 
 	// Parse flags
 	flag.Parse()
-
-	if *helpFlag {
-		printHelp()
-		os.Exit(0)
-	}
 
 	problems, err := parseCSVFile(*csvFlag)
 	checkError(err)
