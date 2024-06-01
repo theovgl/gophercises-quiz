@@ -24,6 +24,12 @@ func printHelp() {
 	fmt.Println("\tthe time limit for the quizz in seconds (default 30)")
 }
 
+func checkError(e error) {
+	if e != nil {
+		panic(e)
+	}
+}
+
 func main() {
 	// Declare flags
 	helpFlag := flag.Bool("h", false, "display help")
