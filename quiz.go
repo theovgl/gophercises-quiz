@@ -13,7 +13,7 @@ type QuizConfig struct {
 }
 
 func printHelp() {
-	fmt.Println("Usage of ./quizz:")
+	fmt.Println("Usage of ./quiz:")
 
 	fmt.Println("  -h")
 	fmt.Println("\tDisplay this help message")
@@ -22,7 +22,7 @@ func printHelp() {
 	fmt.Println("\tA csv file in the format 'question,answer' (default \"problems.csv\")")
 
 	fmt.Println("  -limit int")
-	fmt.Println("\tthe time limit for the quizz in seconds (default 30)")
+	fmt.Println("\tthe time limit for the quiz in seconds (default 30)")
 }
 
 func checkError(e error) {
@@ -31,7 +31,7 @@ func checkError(e error) {
 	}
 }
 
-func runQuizz(config *QuizConfig, problems [][]string) {
+func runQuiz(config *QuizConfig, problems [][]string) {
 	for i, problem := range problems {
 		var answer string
 		fmt.Printf("Problem #%d: %s = ", i+1, problem[0])
@@ -86,5 +86,5 @@ func main() {
 		score:     0,
 	}
 
-	runQuizz(config, problems)
+	runQuiz(config, problems)
 }
