@@ -5,7 +5,7 @@ This project is a simple CLI quiz game, created as part of the [Gophercises](htt
 ## To Do
  - [ ] Check that the CSV file is well formated
  - [ ] Implement a timer
- - [ ] Maybe create a `Problem` type to make the code more readable and clear
+ - [x] ~~Maybe create a `Problem` type to make the code more readable and clear~~
 
 ## What did I learned thank to this exercise ?
 - **Flags**: Understanding and using command-line flags in Go.

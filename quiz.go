@@ -5,7 +5,13 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 )
+
+type Problem struct {
+	question string
+	answer   string
+}
 
 type QuizConfig struct {
 	timeLimit int
@@ -18,17 +24,17 @@ func checkError(e error) {
 	}
 }
 
-func runQuiz(config *QuizConfig, problems [][]string) {
+func runQuiz(config *QuizConfig, problems []Problem) {
 	for i, problem := range problems {
 		var answer string
-		fmt.Printf("Problem #%d: %s = ", i+1, problem[0])
+		fmt.Printf("Problem #%d: %s = ", i+1, problem.question)
 
 		if _, err := fmt.Scanln(&answer); err != nil && err.Error() != "unexpected newline" {
 			fmt.Println("Error reading input:", err)
 			continue
 		}
 
-		if answer == problem[1] {
+		if answer == problem.answer {
 			config.score++
 		}
 	}
@@ -51,6 +57,20 @@ func parseCSVFile(filename string) ([][]string, error) {
 	return records, nil
 }
 
+func parseProblems(lines [][]string) []Problem {
+	problems := make([]Problem, len(lines))
+
+	for i, line := range lines {
+		problem := Problem{
+			question: line[0],
+			answer:   strings.TrimSpace(line[1]),
+		}
+		problems[i] = problem
+	}
+
+	return problems
+}
+
 func main() {
 	// Declare flags
 	csvFlag := flag.String("csv", "problems/maths.csv", "a csv file in the format 'question,answer'")
@@ -59,8 +79,10 @@ func main() {
 	// Parse flags
 	flag.Parse()
 
-	problems, err := parseCSVFile(*csvFlag)
+	lines, err := parseCSVFile(*csvFlag)
 	checkError(err)
+
+	problems := parseProblems(lines)
 
 	config := &QuizConfig{
 		timeLimit: *timeFlag,
