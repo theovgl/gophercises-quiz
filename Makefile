@@ -22,5 +22,5 @@ run: build
 .PHONY:run
 
 clean:
-	rm quiz
+	go clean
 .PHONY:clean
