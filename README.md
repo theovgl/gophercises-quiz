@@ -1,4 +1,4 @@
-# Gophercises #1: Quizz
+# Gophercises #1: Quiz
 
 This project is a simple CLI quiz game, created as part of the [Gophercises](https://gophercises.com/) learning program.
 
