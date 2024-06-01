@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/csv"
 	"flag"
 	"fmt"
 	"os"
@@ -30,6 +31,22 @@ func checkError(e error) {
 	}
 }
 
+func parseCSVFile(filename string) ([][]string, error) {
+	f, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	r := csv.NewReader(f)
+	records, err := r.ReadAll()
+	if err != nil {
+		return nil, err
+	}
+
+	return records, nil
+}
+
 func main() {
 	// Declare flags
 	helpFlag := flag.Bool("h", false, "display help")
@@ -42,5 +59,13 @@ func main() {
 	if *helpFlag {
 		printHelp()
 		os.Exit(0)
+	}
+
+	problems, err := parseCSVFile(*csvFlag)
+	checkError(err)
+
+	config := &QuizConfig{
+		timeLimit: *timeFlag,
+		score:     0,
 	}
 }
