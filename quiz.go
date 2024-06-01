@@ -31,6 +31,23 @@ func checkError(e error) {
 	}
 }
 
+func runQuizz(config *QuizConfig, problems [][]string) {
+	for i, problem := range problems {
+		var answer string
+		fmt.Printf("Problem #%d: %s = ", i+1, problem[0])
+
+		if _, err := fmt.Scanln(&answer); err != nil && err.Error() != "unexpected newline" {
+			fmt.Println("Error reading input:", err)
+			continue
+		}
+
+		if answer == problem[1] {
+			config.score++
+		}
+	}
+	fmt.Printf("Your score is %d\n", config.score)
+}
+
 func parseCSVFile(filename string) ([][]string, error) {
 	f, err := os.Open(filename)
 	if err != nil {
@@ -68,4 +85,6 @@ func main() {
 		timeLimit: *timeFlag,
 		score:     0,
 	}
+
+	runQuizz(config, problems)
 }
