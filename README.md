@@ -3,7 +3,7 @@
 This project is a simple CLI quiz game, created as part of the [Gophercises](https://gophercises.com/) learning program.
 
 ## To Do
- - [ ] Check that the CSV file is well formated
+ - [x] ~~Check that the CSV file is well formated~~
  - [ ] Implement a timer
  - [x] ~~Maybe create a `Problem` type to make the code more readable and clear~~
 

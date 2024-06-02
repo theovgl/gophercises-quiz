@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/csv"
+	"errors"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 )
@@ -16,12 +18,6 @@ type Problem struct {
 type QuizConfig struct {
 	timeLimit int
 	score     int
-}
-
-func checkError(e error) {
-	if e != nil {
-		panic(e)
-	}
 }
 
 func runQuiz(config *QuizConfig, problems []Problem) {
@@ -57,10 +53,15 @@ func parseCSVFile(filename string) ([][]string, error) {
 	return records, nil
 }
 
-func parseProblems(lines [][]string) []Problem {
+func parseProblems(lines [][]string) ([]Problem, error) {
 	problems := make([]Problem, len(lines))
 
 	for i, line := range lines {
+		if len(line) != 2 {
+			err := errors.New("wrong CSV format")
+			return nil, err
+		}
+
 		problem := Problem{
 			question: line[0],
 			answer:   strings.TrimSpace(line[1]),
@@ -68,7 +69,7 @@ func parseProblems(lines [][]string) []Problem {
 		problems[i] = problem
 	}
 
-	return problems
+	return problems, nil
 }
 
 func main() {
@@ -80,9 +81,14 @@ func main() {
 	flag.Parse()
 
 	lines, err := parseCSVFile(*csvFlag)
-	checkError(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	problems := parseProblems(lines)
+	problems, err := parseProblems(lines)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	config := &QuizConfig{
 		timeLimit: *timeFlag,
