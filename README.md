@@ -11,4 +11,4 @@ This project is a simple CLI quiz game, created as part of the [Gophercises](htt
 - **Flags**: Understanding and using command-line flags in Go.
 - **File Handling**: Opening and reading files in Go.
 - **Error Management**: Implementing basic error handling (with room for improvement).
-- **Go's Standard Library**: Exploring and utilizing the Go standard library more deeply.
+- **Standard Library**: Exploring and utilizing the Go standard library more deeply.
