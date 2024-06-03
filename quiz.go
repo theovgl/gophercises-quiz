@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 )
 
 type Problem struct {
@@ -20,21 +21,45 @@ type QuizConfig struct {
 	score     int
 }
 
-func runQuiz(config *QuizConfig, problems []Problem) {
-	for i, problem := range problems {
-		var answer string
-		fmt.Printf("Problem #%d: %s = ", i+1, problem.question)
-
-		if _, err := fmt.Scanln(&answer); err != nil && err.Error() != "unexpected newline" {
-			fmt.Println("Error reading input:", err)
-			continue
-		}
-
-		if answer == problem.answer {
-			config.score++
-		}
+func printScore(outOfTime bool, config *QuizConfig, problemsNumber int) {
+	if outOfTime {
+		fmt.Printf("\nTime's up ! You scored %d out of %d\n", config.score, problemsNumber)
+	} else {
+		fmt.Printf("\nYou scored %d out of %d\n", config.score, problemsNumber)
 	}
-	fmt.Printf("You scored %d out of %d\n", config.score, len(problems))
+}
+
+func runQuiz(config *QuizConfig, problems []Problem) {
+	// Start Timer
+	timer := time.NewTimer(time.Duration(config.timeLimit) * time.Second)
+	defer timer.Stop()
+
+	done := make(chan bool)
+
+	// Start quizz loop
+	go func() {
+		for i, problem := range problems {
+			var answer string
+			fmt.Printf("Problem #%d: %s = ", i+1, problem.question)
+
+			if _, err := fmt.Scanln(&answer); err != nil && err.Error() != "unexpected newline" {
+				fmt.Println("Error reading input:", err)
+				continue
+			}
+
+			if answer == problem.answer {
+				config.score++
+			}
+		}
+		done <- true
+	}()
+
+	select {
+	case <-timer.C:
+		printScore(true, config, len(problems))
+	case <-done:
+		printScore(false, config, len(problems))
+	}
 }
 
 func parseCSVFile(filename string) ([][]string, error) {
